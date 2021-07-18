@@ -1,6 +1,6 @@
 package ru.leymooo.fixer.utils;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
+import com.comphenix.net.bytebuddy.asm.Advice.ArgumentHandler.Factory;
 import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

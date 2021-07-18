@@ -41,8 +41,8 @@ public class ItemChecker {
         nbt.addAll(Arrays.asList("ActiveEffects", "Command", "CustomName", "AttributeModifiers", "Unbreakable"));
         nbt.removeAll(ignoreNbt);
         tiles = EnumSet.copyOf(Arrays.asList(
-                Material.FURNACE, Material.CHEST, Material.TRAPPED_CHEST, Material.DROPPER, Material.DISPENSER, Material.COMMAND_MINECART, Material.HOPPER_MINECART,
-                Material.HOPPER, Material.BREWING_STAND_ITEM, Material.BEACON, Material.SIGN, Material.MOB_SPAWNER, Material.NOTE_BLOCK, Material.COMMAND, Material.JUKEBOX));
+                Material.FURNACE, Material.CHEST, Material.TRAPPED_CHEST, Material.DROPPER, Material.DISPENSER, Material.LEGACY_COMMAND_MINECART, Material.HOPPER_MINECART,
+                Material.HOPPER, Material.LEGACY_BREWING_STAND_ITEM, Material.BEACON, Material.LEGACY_SIGN, Material.LEGACY_MOB_SPAWNER, Material.NOTE_BLOCK, Material.LEGACY_COMMAND, Material.JUKEBOX));
 
         world = new HashSet<>(plugin.getConfig().getStringList("ignore-worlds"));
         checkench = plugin.getConfig().getBoolean("check-enchants");
@@ -139,7 +139,7 @@ public class ItemChecker {
             }
             if (tag.containsKey("BlockEntityTag") && !isShulkerBox(stack, stack) && !needIgnore(stack)
                     && !ignoreNbt.contains("BlockEntityTag")) {
-                if (mat == Material.MOB_SPAWNER) {
+                if (mat == Material.LEGACY_MOB_SPAWNER) {
                     if (fixSpawner(tag)) {
                         cheat = CheckStatus.FIXED;
                     }
@@ -151,18 +151,18 @@ public class ItemChecker {
                     || (!ignoreNbt.contains("run_command") && tagS.contains("run_command")))) {
                 tag.getKeys().clear();
                 cheat = CheckStatus.FIXED;
-            } else if (mat == Material.MONSTER_EGG && !ignoreNbt.contains("EntityTag") && tag.containsKey("EntityTag") && fixEgg(tag)) {
+            } else if (mat == Material.LEGACY_MONSTER_EGG && !ignoreNbt.contains("EntityTag") && tag.containsKey("EntityTag") && fixEgg(tag)) {
                 cheat = CheckStatus.FIXED;
             } else if (mat == Material.ARMOR_STAND && !ignoreNbt.contains("EntityTag") && tag.containsKey("EntityTag")) {
                 tag.remove("EntityTag");
                 cheat = CheckStatus.FIXED;
-            } else if ((mat == Material.SKULL || mat == Material.SKULL_ITEM) && stack.getDurability() == 3) {
+            } else if ((mat == Material.LEGACY_SKULL || mat == Material.LEGACY_SKULL_ITEM) && stack.getDurability() == 3) {
                 if (isCrashSkull(tag)) {
                     cheat = CheckStatus.FIXED;
                 }
-            } else if (mat == Material.FIREWORK && checkFireWork(stack, tag)) {
+            } else if (mat == Material.LEGACY_FIREWORK && checkFireWork(stack, tag)) {
                 cheat = CheckStatus.FIXED;
-            } else if (mat == Material.BANNER && checkBanner(stack)) {
+            } else if (mat == Material.LEGACY_BANNER && checkBanner(stack)) {
                 cheat = CheckStatus.FIXED;
             } else if (isPotion(stack) && !ignoreNbt.contains("CustomPotionEffects") && tag.containsKey("CustomPotionEffects")
                     && (checkPotion(stack, p) || checkCustomColor(tag.getCompound("CustomPotionEffects")))) {
@@ -177,7 +177,7 @@ public class ItemChecker {
 
     private boolean needIgnore(ItemStack stack) {
         Material m = stack.getType();
-        return (m == Material.BANNER || (VersionUtils.isVersion(9) && (m == Material.SHIELD)));
+        return (m == Material.LEGACY_BANNER || (VersionUtils.isVersion(9) && (m == Material.SHIELD)));
     }
 
     private void checkShulkerBox(ItemStack stack, Player p) {
